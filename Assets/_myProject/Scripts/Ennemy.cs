@@ -11,20 +11,35 @@ public class Ennemy : MonoBehaviour
 
     //autre
     private Player _player;
+    private int _nbVie = 1;
+    private bool _enMouvement = true;
+    private Animator _animator;
+    private Ennemy[] _enemy;
     // Start is called before the first frame update
     void Start()
     {
+        _animator = GetComponent<Animator>();
         _player = FindObjectOfType<Player>();
+        _enemy = FindObjectsOfType<Ennemy>();
         if (_id == 1)
         {
             Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(),_player.GetComponent<Collider2D>());
+            for(int c= 0; c < _enemy.Length; c++)
+            {
+                Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), _enemy[c].GetComponent<Collider2D>());
+            }
         }
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        Mouvement();
+        if(_enMouvement)
+        {
+            Mouvement();
+        }
+        
     }
 
     private void Mouvement()
@@ -40,6 +55,11 @@ public class Ennemy : MonoBehaviour
         {
             Destroy(collision.gameObject);
             Destroy(gameObject);
+        }
+        else if(collision.gameObject.tag == "Player" && _id != 1)
+        {
+            _enMouvement = false;
+            _animator.SetBool("GoIdleSkeleton", true);
         }
     }
 }

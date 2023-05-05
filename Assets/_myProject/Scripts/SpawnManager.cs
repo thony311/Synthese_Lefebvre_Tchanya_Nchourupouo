@@ -27,7 +27,9 @@ public class SpawnManager : MonoBehaviour
         while (!_stopSpawn)
         {
             Vector3 positionSpawn = new Vector3(14f, randomEtage(), 0f);
-            
+            GameObject NewEnnemy = Instantiate(_listeEnemyPrefabs[0], positionSpawn, Quaternion.identity);
+            NewEnnemy.transform.parent = _enemyCountainer.transform;
+            yield return new WaitForSeconds(2.0f);
         }
     }
 

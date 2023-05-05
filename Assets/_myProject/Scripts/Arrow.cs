@@ -21,6 +21,15 @@ public class Arrow : MonoBehaviour
     void Update()
     {
         Mouvement();
+        DestroyArrow();
+    }
+
+    private void DestroyArrow()
+    {
+        if (transform.position.x > 14 || transform.position.x < -14)
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void Mouvement()
@@ -40,19 +49,5 @@ public class Arrow : MonoBehaviour
         Vector3 direction = default;
         direction = new Vector3(_horizontal, 0f, 0f);
         this.transform.Translate(direction * Time.deltaTime * _vitesse);
-    }
-
-    public void SetCoteArrow(bool cote)
-    {
-       
-        if(cote == true)
-        {
-            _horizontal = 1;
-        }
-        else
-        {
-            _horizontal = -1;
-        }
-        
     }
 }
