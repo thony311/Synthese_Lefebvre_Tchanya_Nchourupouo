@@ -2,30 +2,34 @@ using Mono.Cecil.Cil;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour
 {
     //SerializedField
     [SerializeField] float _vitesse = 10;
     [SerializeField] GameObject _arrow = default;
-    [SerializeField] float _fireRate = 0.5f;
+    [SerializeField] float _fireRate = 1.51f;
     //
     private float _canFire = -1f;
     private Animator _animator;
     private bool _cotePlayer = true;
+    private bool _enTir = false;
 
-    private Arrow _scriptArrow;
+    
 
     void Start()
     {
         _animator = GetComponent<Animator>();
-        _scriptArrow = _arrow.GetComponent<Arrow>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        ActionJoueur();
+        if(!_enTir)
+        {
+            ActionJoueur();
+        }
         Tir();
     }
 
@@ -41,14 +45,14 @@ public class Player : MonoBehaviour
             _animator.SetBool("Run", true);
             this.GetComponent<SpriteRenderer>().flipX = true;
             _cotePlayer = false;
-            _scriptArrow.SetCoteArrow(false);
+            Debug.Log(_cotePlayer);
         }
         else if (horizontal > 0)
         {
             _animator.SetBool("Run", true);
             this.GetComponent<SpriteRenderer>().flipX = false;
             _cotePlayer = true;
-            _scriptArrow.SetCoteArrow(true);
+            Debug.Log(_cotePlayer);
         }
         else
         {
@@ -58,19 +62,38 @@ public class Player : MonoBehaviour
 
     private void Tir()
     {
-        if (Input.GetKey(KeyCode.Space) && Time.time > _canFire)
+        
+        if (Input.GetKeyUp(KeyCode.Space) && Time.time > _canFire)
         {
+            _enTir = true;
+            float positionX;
             if(_cotePlayer == true)
             {
-                Instantiate(_arrow, transform.position + new Vector3(0.7f,-0.4f,0f), Quaternion.identity);
+                positionX = 0.7f;
             }
             else
             {
-                Instantiate(_arrow, transform.position + new Vector3(-0.7f, -0.4f, 0f), Quaternion.identity);
+                positionX = -0.85f;
             }
-            _canFire = Time.time + _fireRate;
+            _animator.SetBool("Attack", true);
+            StartCoroutine(SpawnArrow(positionX));
+            //Instantiate(_arrow, transform.position + new Vector3(positionX, -0.4f, 0f), Quaternion.identity); 
         }
-        
     }
-    
+
+    IEnumerator SpawnArrow(float positionX)
+    {
+        _canFire = Time.time + _fireRate;
+        yield return new WaitForSeconds(0.3f);
+        Instantiate(_arrow, transform.position + new Vector3(positionX, -0.4f, 0f), Quaternion.identity);
+        yield return new WaitForSeconds(0.1f);
+        _animator.SetBool("Attack", false);
+        _enTir = false;
+
+    }
+
+    public bool GetCotePlayer()
+    {
+        return _cotePlayer;
+    }
 }
