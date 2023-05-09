@@ -78,14 +78,19 @@ public class Ennemy : MonoBehaviour
                 {
                     _enMouvement = false;
                     _animator.SetBool("DeathGoblin", true);
-                    Destroy(gameObject, 0.3f);
+                    GetComponent<BoxCollider2D>().enabled = false;
                 }
                 if (_id == 2)
                 {
                     _animator.SetBool("DeathSkeleton", true);
-                    Destroy(gameObject,0.5f);
+                    GetComponent<BoxCollider2D>().enabled = false;
                 }
-                    
+                if (_id == 3)
+                {
+                    _animator.SetBool("DeathShroom", true);
+                    GetComponent<BoxCollider2D>().enabled = false;
+                }
+
             }
             
             
@@ -95,11 +100,11 @@ public class Ennemy : MonoBehaviour
             _boucle = true;
             _enMouvement = false;
             _animator.SetBool("GoIdleSkeleton", true);
-            StartCoroutine(attack());
+            StartCoroutine(AttackSkeleton());
         }
     }
 
-    IEnumerator attack()
+    IEnumerator AttackSkeleton()
     {
         while (_boucle == true) {
             //_boucle = false;
@@ -150,6 +155,11 @@ public class Ennemy : MonoBehaviour
         {
             Vector3 newPosition = new Vector3(14f, _spawnManager.randomEtage(), 0f);
             transform.position = newPosition;
+        }
+
+        if(transform.position.y <= -7)
+        {
+            Destroy(gameObject);
         }
     }
 }

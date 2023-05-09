@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
     private bool _cotePlayer = true;
     private bool _enTir = false;
     [SerializeField]  private int _nbVie = 5;
+    private bool _death = false;
     
 
     void Start()
@@ -26,11 +27,19 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!_enTir)
+        if(!_death)
         {
-            ActionJoueur();
+            if(!_enTir)
+            {
+                ActionJoueur();
+            }
+            Tir();
+            if(transform.position.y < -6)
+            {
+                transform.position = new Vector3(transform.position.x, 5f, 0f);
+            }
         }
-        Tir();
+        
     }
 
     private void ActionJoueur()
@@ -57,6 +66,15 @@ public class Player : MonoBehaviour
         else
         {
             _animator.SetBool("Run", false);
+        }
+
+        if(vertical < 0)
+        {
+            GetComponent<BoxCollider2D>().enabled= false;
+        }
+        else
+        {
+            GetComponent<BoxCollider2D>().enabled = true;
         }
     }
 
@@ -100,5 +118,11 @@ public class Player : MonoBehaviour
     public void ReduireVie()
     {
         _nbVie -= 1;
+        if(_nbVie <= 0)
+        {
+            _death = true;
+            _animator.SetBool("Death",true);
+            GetComponent<BoxCollider2D>().enabled = false;
+        }
     }
 }
