@@ -15,7 +15,7 @@ public class Player : MonoBehaviour
     private Animator _animator;
     private bool _cotePlayer = true;
     private bool _enTir = false;
-
+    [SerializeField]  private int _nbVie = 5;
     
 
     void Start()
@@ -95,5 +95,10 @@ public class Player : MonoBehaviour
     public bool GetCotePlayer()
     {
         return _cotePlayer;
+    }
+
+    public void ReduireVie()
+    {
+        _nbVie -= 1;
     }
 }

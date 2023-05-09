@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEditor.Experimental.GraphView.GraphView;
 
@@ -11,23 +12,38 @@ public class Ennemy : MonoBehaviour
 
     //autre
     private Player _player;
-    private int _nbVie = 1;
+    private int _nbVie;
     private bool _enMouvement = true;
     private Animator _animator;
     private Ennemy[] _enemy;
+    private bool _enCollision;
+    private bool _boucle = true;
+    private SpawnManager _spawnManager;
     // Start is called before the first frame update
     void Start()
     {
         _animator = GetComponent<Animator>();
         _player = FindObjectOfType<Player>();
         _enemy = FindObjectsOfType<Ennemy>();
+        _spawnManager = FindObjectOfType<SpawnManager>();
+
+        for(int c= 0; c < _enemy.Length; c++)
+        {
+           Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), _enemy[c].GetComponent<Collider2D>());
+        }
         if (_id == 1)
         {
+            _nbVie = 1;
             Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(),_player.GetComponent<Collider2D>());
-            for(int c= 0; c < _enemy.Length; c++)
-            {
-                Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), _enemy[c].GetComponent<Collider2D>());
-            }
+            
+        }
+        else if (_id == 2)
+        {
+            _nbVie = 3;
+        }
+        else if (_id == 3)
+        {
+            _nbVie = 5;
         }
         
     }
@@ -39,6 +55,7 @@ public class Ennemy : MonoBehaviour
         {
             Mouvement();
         }
+        MoveEnnemy();
         
     }
 
@@ -54,12 +71,85 @@ public class Ennemy : MonoBehaviour
         if(collision.gameObject.tag == "Arrow")
         {
             Destroy(collision.gameObject);
-            Destroy(gameObject);
+            _nbVie -= 1;
+            if (_nbVie <= 0)
+            {
+                if (_id == 1)
+                {
+                    _enMouvement = false;
+                    _animator.SetBool("DeathGoblin", true);
+                    Destroy(gameObject, 0.3f);
+                }
+                if (_id == 2)
+                {
+                    _animator.SetBool("DeathSkeleton", true);
+                    Destroy(gameObject,0.5f);
+                }
+                    
+            }
+            
+            
         }
-        else if(collision.gameObject.tag == "Player" && _id != 1)
+        else if(collision.gameObject.tag == "Player" && _id == 2)
         {
+            _boucle = true;
             _enMouvement = false;
             _animator.SetBool("GoIdleSkeleton", true);
+            StartCoroutine(attack());
+        }
+    }
+
+    IEnumerator attack()
+    {
+        while (_boucle == true) {
+            //_boucle = false;
+            yield return new WaitForSeconds(0.5f);
+            _animator.SetBool("AttackSkeleton", true);
+            yield return new WaitForSeconds(0.7f);
+            if (_enCollision == true)
+            {
+                _player.ReduireVie();
+
+            }
+            yield return new WaitForSeconds(0.2f);
+            _animator.SetBool("AttackSkeleton", false);
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Player" && _id == 2)
+        {
+            _boucle = false;
+            _enMouvement = true;
+            _animator.SetBool("GoIdleSkeleton", false);
+        }
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Player" && _id == 2)
+        {
+            _enCollision = true;
+            _enMouvement = false;
+            _animator.SetBool("GoIdleSkeleton", true);
+            
+        }
+        else
+        {
+            _enCollision = false;
+            _enMouvement = true;
+            _animator.SetBool("GoIdleSkeleton", false);
+            
+        }
+    }
+
+    private void MoveEnnemy()
+    {
+        if(transform.position.x <= -12)
+        {
+            Vector3 newPosition = new Vector3(14f, _spawnManager.randomEtage(), 0f);
+            transform.position = newPosition;
         }
     }
 }

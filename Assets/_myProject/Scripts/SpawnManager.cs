@@ -26,14 +26,15 @@ public class SpawnManager : MonoBehaviour
         yield return new WaitForSeconds(5.0f);
         while (!_stopSpawn)
         {
+            int randomEnnemy = Random.Range(0, 2);
             Vector3 positionSpawn = new Vector3(14f, randomEtage(), 0f);
-            GameObject NewEnnemy = Instantiate(_listeEnemyPrefabs[0], positionSpawn, Quaternion.identity);
+            GameObject NewEnnemy = Instantiate(_listeEnemyPrefabs[randomEnnemy], positionSpawn, Quaternion.identity);
             NewEnnemy.transform.parent = _enemyCountainer.transform;
             yield return new WaitForSeconds(2.0f);
         }
     }
 
-    private float randomEtage()
+    public float randomEtage()
     {
         float random = Random.Range(1, 4);
         switch(random)
