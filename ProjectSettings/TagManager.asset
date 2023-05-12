@@ -3,7 +3,13 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Arrow
+  - Chest
+  - Chest1
+  - Chest2
+  - Chest3
+  - Chest4
   layers:
   - Default
   - TransparentFX
