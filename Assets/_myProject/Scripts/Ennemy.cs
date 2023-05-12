@@ -56,14 +56,15 @@ public class Ennemy : MonoBehaviour
             Mouvement();
         }
         MoveEnnemy();
-        //if(_destroyChest)
-        //{
-        //    _destroyChest= false;
-        //    //_collisionChest.gameObject.GetComponent<Chest>().DestroyChest();
-        //    Debug.Log(_collisionChest.gameObject);
-        //    Destroy(_collisionChest.gameObject);
-        //}
-        
+        if (_destroyChest)
+        {
+            _destroyChest = false;
+            //_collisionChest.gameObject.GetComponent<Chest>().DestroyChest();
+            Debug.Log(_collisionChest.gameObject);
+            Destroy(_collisionChest.gameObject);
+            StopCoroutine("AttackShroom");
+        }
+
     }
     //On Collision ================================================================================================================================================================
     private void OnCollisionExit2D(Collision2D collision)
@@ -263,9 +264,9 @@ public class Ennemy : MonoBehaviour
         {   
             Debug.Log("tu rentre dans la boucle");
             Debug.Log(toto.gameObject);
-            Destroy(toto.gameObject);
+            //Destroy(toto.gameObject);
             //_collisionChest.gameObject.GetComponent<Chest>().DestroyChest();
-            //_destroyChest = true;
+            _destroyChest = true;
         }
         yield return new WaitForSeconds(0.1f);
         _animator.SetBool("AttackShroom", false);
@@ -274,6 +275,6 @@ public class Ennemy : MonoBehaviour
         _animator.SetBool("RunShroom", true);
         _animator.SetBool("IdleShroom", false);
         _enMouvement = true;
-
+        //yield break;
     }
 }

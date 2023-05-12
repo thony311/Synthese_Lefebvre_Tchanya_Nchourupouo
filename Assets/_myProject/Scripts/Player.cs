@@ -125,4 +125,9 @@ public class Player : MonoBehaviour
             GetComponent<BoxCollider2D>().enabled = false;
         }
     }
+
+    public int GetVie()
+    {
+        return _nbVie;
+    }
 }
