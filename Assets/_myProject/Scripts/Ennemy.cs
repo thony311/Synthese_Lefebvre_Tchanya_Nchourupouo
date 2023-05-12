@@ -56,11 +56,13 @@ public class Ennemy : MonoBehaviour
             Mouvement();
         }
         MoveEnnemy();
-        if(_destroyChest)
-        {
-            _destroyChest= false;
-            _collisionChest.gameObject.GetComponent<Chest>().DestroyChest();
-        }
+        //if(_destroyChest)
+        //{
+        //    _destroyChest= false;
+        //    //_collisionChest.gameObject.GetComponent<Chest>().DestroyChest();
+        //    Debug.Log(_collisionChest.gameObject);
+        //    Destroy(_collisionChest.gameObject);
+        //}
         
     }
     //On Collision ================================================================================================================================================================
@@ -72,6 +74,7 @@ public class Ennemy : MonoBehaviour
             _enMouvement = true;
             _animator.SetBool("GoIdleSkeleton", false);
         }
+        
     }
     private void OnCollisionStay2D(Collision2D collision)
     {
@@ -147,7 +150,7 @@ public class Ennemy : MonoBehaviour
             }
         }
     }
-    //functions ====================================================================================================================================================================
+    //Méthodes ====================================================================================================================================================================
     //permet de bouger l'ennemi vers la gauche
     private void Mouvement()
     {
@@ -176,7 +179,8 @@ public class Ennemy : MonoBehaviour
         _animator.SetBool("IdleShroom", true);
         _animator.SetBool("RunShroom", false);
         _collisionChest = collision;
-        StartCoroutine(AttackShroom());
+        Debug.Log(_collisionChest.gameObject);
+        StartCoroutine(AttackShroom(collision));
     }
     //Le resultat de la collision avec le goblin et le chest qui a pour resultat de lancer lanimation du goblin et detruire le chest
     private void CollisionGoblinChest(Collision2D collision)
@@ -184,6 +188,7 @@ public class Ennemy : MonoBehaviour
         _enMouvement = false;
         _animator.SetBool("IdleGoblin", true);
         _animator.SetBool("RunGoblin", false);
+        _collisionChest = collision;
         StartCoroutine(AttackGoblin(collision));
     }
     //Le resultat de la collision avec le skeleton et le player qui a pour resultat de lancer les animations du skeleton et faire perdre des points de vies au joueurs
@@ -241,24 +246,26 @@ public class Ennemy : MonoBehaviour
             if (_enCollision == true)
             {
                 _player.ReduireVie();
-
             }
             yield return new WaitForSeconds(0.2f);
             _animator.SetBool("AttackSkeleton", false);
         }
     }
-    IEnumerator AttackShroom()
+    IEnumerator AttackShroom(Collision2D toto)
     {
+        Debug.Log(toto.gameObject);
         yield return new WaitForSeconds(1f);
         _animator.SetBool("AttackShroom", true);
         _animator.SetBool("IdleShroom", false);
+        Debug.Log("avant la boucle" + toto.gameObject);
         yield return new WaitForSeconds(0.8f);
         if (_enCollision == true )
-        {
-            //Destroy(collision.gameObject);
+        {   
             Debug.Log("tu rentre dans la boucle");
+            Debug.Log(toto.gameObject);
+            Destroy(toto.gameObject);
             //_collisionChest.gameObject.GetComponent<Chest>().DestroyChest();
-            _destroyChest= true;
+            //_destroyChest = true;
         }
         yield return new WaitForSeconds(0.1f);
         _animator.SetBool("AttackShroom", false);

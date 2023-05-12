@@ -17,6 +17,6 @@ public class Chest : MonoBehaviour
     // functions =====================================================================================================================================================================
     public void DestroyChest()
     {
-        Destroy(gameObject);
+        Destroy(this.gameObject);
     }
 }
