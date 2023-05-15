@@ -10,6 +10,7 @@ TagManager:
   - Chest2
   - Chest3
   - Chest4
+  - FireArrow
   layers:
   - Default
   - TransparentFX

@@ -6,16 +6,20 @@ using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour
 {
-    //SerializedField
+    //SerializedField ======================================================================================================================================================
     [SerializeField] float _vitesse = 10;
     [SerializeField] GameObject _arrow = default;
+    [SerializeField] GameObject _fireArrow = default;
     [SerializeField] float _fireRate = 1.51f;
-    //
+    [SerializeField] float _fireRateFireArrow = 10f;
+    [SerializeField]  private int _nbVie = 3;
+    //Variables ======================================================================================================================================================
     private float _canFire = -1f;
+    private float _canFireFireArrow = -1f;
     private Animator _animator;
     private bool _cotePlayer = true;
     private bool _enTir = false;
-    [SerializeField]  private int _nbVie = 5;
+    
     private bool _death = false;
     
 
@@ -97,6 +101,22 @@ public class Player : MonoBehaviour
             StartCoroutine(SpawnArrow(positionX));
             //Instantiate(_arrow, transform.position + new Vector3(positionX, -0.4f, 0f), Quaternion.identity); 
         }
+        if (Input.GetKeyUp(KeyCode.F) && Time.time > _canFire && Time.time > _canFireFireArrow)
+        {
+            _enTir = true;
+            float positionX;
+            if (_cotePlayer == true)
+            {
+                positionX = 0.7f;
+            }
+            else
+            {
+                positionX = -0.85f;
+            }
+            _animator.SetBool("Attack", true);
+            StartCoroutine(SpawnFireArrow(positionX));
+            //Instantiate(_arrow, transform.position + new Vector3(positionX, -0.4f, 0f), Quaternion.identity); 
+        }
     }
 
     IEnumerator SpawnArrow(float positionX)
@@ -107,7 +127,16 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         _animator.SetBool("Attack", false);
         _enTir = false;
+    }
 
+    IEnumerator SpawnFireArrow(float positionX)
+    {
+        _canFireFireArrow = Time.time + _fireRateFireArrow;
+        yield return new WaitForSeconds(0.3f);
+        Instantiate(_fireArrow, transform.position + new Vector3(positionX, -0.4f, 0f), Quaternion.identity);
+        yield return new WaitForSeconds(0.1f);
+        _animator.SetBool("Attack", false);
+        _enTir = false;
     }
 
     public bool GetCotePlayer()

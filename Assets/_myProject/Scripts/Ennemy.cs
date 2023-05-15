@@ -20,7 +20,8 @@ public class Ennemy : MonoBehaviour
     private bool _boucle = true;
     private SpawnManager _spawnManager;
     private bool _destroyChest = false;
-    private Collision2D _collisionChest = default(Collision2D);
+    private Collision2D _collisionChest = default;
+    private UI _ui;
     //start ========================================================================================================================================================================
     void Start()
     {
@@ -28,7 +29,7 @@ public class Ennemy : MonoBehaviour
         _player = FindObjectOfType<Player>();
         _enemy = FindObjectsOfType<Ennemy>();
         _spawnManager = FindObjectOfType<SpawnManager>();
-
+        _ui = FindObjectOfType<UI>();
         for(int c= 0; c < _enemy.Length; c++)
         {
            Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), _enemy[c].GetComponent<Collider2D>());
@@ -114,6 +115,15 @@ public class Ennemy : MonoBehaviour
                     case 3: MortShroom(); break;
                 }
             }
+        }
+        if (collision.gameObject.tag == "FireArrow")
+        {
+                switch (_id)
+                {
+                    case 1: MortGoblin(); break;
+                    case 2: MortSkeleton(); break;
+                    case 3: MortShroom(); break;
+                }
         }
         else if(_id == 2)
         {
@@ -205,12 +215,14 @@ public class Ennemy : MonoBehaviour
     {
         _animator.SetBool("DeathShroom", true);
         GetComponent<BoxCollider2D>().enabled = false;
+        _ui.AddPointage(150);
     }
     //Lance la mort du skeleton
     private void MortSkeleton()
     {
         _animator.SetBool("DeathSkeleton", true);
         GetComponent<BoxCollider2D>().enabled = false;
+        _ui.AddPointage(100);
     }
     //Lance la mort du Goblin
     private void MortGoblin()
@@ -218,6 +230,7 @@ public class Ennemy : MonoBehaviour
         _enMouvement = false;
         _animator.SetBool("DeathGoblin", true);
         GetComponent<BoxCollider2D>().enabled = false;
+        _ui.AddPointage(50);
     }
 
     // Coroutines ================================================================================================================================================================
