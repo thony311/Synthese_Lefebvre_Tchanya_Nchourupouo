@@ -5,25 +5,25 @@ using UnityEngine;
 
 public class Arrow : MonoBehaviour
 {
-    //SerializedField
+    //SerializedField ================================================================================================================================================================
     [SerializeField] float _vitesse = 15;
-
-    //type
+    //Variables ================================================================================================================================================================
     private float _horizontal = 1;
     private Player _player = default;
     private bool _sense =false;
-    
+    // Start ================================================================================================================================================================
     void Start()
     {
         _player = FindObjectOfType<Player>();
     }
-
+    // Update ================================================================================================================================================================
     void Update()
     {
         Mouvement();
         DestroyArrow();
     }
-
+    // Méthodes ================================================================================================================================================================
+    // Détruit la flèche quand elle va trop loin
     private void DestroyArrow()
     {
         if (transform.position.x > 14 || transform.position.x < -14)
@@ -31,7 +31,7 @@ public class Arrow : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
+    // Bouge la flèche
     private void Mouvement()
     {
         if (!_sense)

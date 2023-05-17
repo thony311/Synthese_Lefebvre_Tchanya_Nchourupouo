@@ -23,18 +23,26 @@ public class UI : MonoBehaviour
     {
         _player = FindObjectOfType<Player>();
         _fillBar.fillAmount = 1f;
-        _vieMax = (float) _player.GetVie();
+        _fillFireArrow.fillAmount = 0f;
+        _vieMax = (float)_player.GetVie();
         _textPointage.text = "Pointage : " +  _pointage;
     }
-
     // Update ====================================================================================================================================================
     void Update()
     {
         LoseHealthBar();
         MiseAJourText();
-
+        ChargementFireArrow();
     }
     // Méthodes =================================================================================================================================================
+    //Gère la bar de chargement de la fire arrow
+    private void ChargementFireArrow()
+    {
+        if (Time.time <= _player.GetCanFireFireArrow())
+        {
+            _fillFireArrow.fillAmount = (_player.GetCanFireFireArrow() - Time.time) / _player.GetTimeFireArrow();
+        }
+    }
     //Gère la bar de vie du player pour la réduire lors de dégât
     public void LoseHealthBar()
     {

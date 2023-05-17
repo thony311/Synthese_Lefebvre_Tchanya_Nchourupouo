@@ -40,17 +40,14 @@ public class Player : MonoBehaviour
                 transform.position = new Vector3(transform.position.x, 5f, 0f);
             }
         }
-        
     }
     // Méthodes private ======================================================================================================================================================
     //Permet de bouger le joueur
     private void ActionJoueur()
     {
         float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
         Vector3 direction = new Vector3(horizontal, 0f, 0f);
         this.transform.Translate(direction * Time.deltaTime * _vitesse);
-
         if(horizontal < 0)
         {
             _animator.SetBool("Run", true);
@@ -69,20 +66,10 @@ public class Player : MonoBehaviour
         {
             _animator.SetBool("Run", false);
         }
-
-        if(vertical < 0)
-        {
-            GetComponent<BoxCollider2D>().enabled= false;
-        }
-        else
-        {
-            GetComponent<BoxCollider2D>().enabled = true;
-        }
     }
     //permet de faire tirer des flèches
     private void Tir()
     {
-        
         if (Input.GetKeyUp(KeyCode.Space) && Time.time > _canFire)
         {
             _enTir = true;
@@ -97,7 +84,6 @@ public class Player : MonoBehaviour
             }
             _animator.SetBool("Attack", true);
             StartCoroutine(SpawnArrow(positionX));
-            
         }
         if (Input.GetKeyUp(KeyCode.F) && Time.time > _canFire && Time.time > _canFireFireArrow)
         {
@@ -113,7 +99,6 @@ public class Player : MonoBehaviour
             }
             _animator.SetBool("Attack", true);
             StartCoroutine(SpawnFireArrow(positionX));
-            
         }
     }
     // Coroutines ======================================================================================================================================================
@@ -126,7 +111,6 @@ public class Player : MonoBehaviour
         _animator.SetBool("Attack", false);
         _enTir = false;
     }
-
     IEnumerator SpawnFireArrow(float positionX)
     {
         _canFireFireArrow = Time.time + _fireRateFireArrow;
@@ -137,11 +121,12 @@ public class Player : MonoBehaviour
         _enTir = false;
     }
     //Méthodes public ==================================================================================================================================================
+    //Retourne le côté du joueur
     public bool GetCotePlayer()
     {
         return _cotePlayer;
     }
-
+    // Permet de réduire le nombre de vies du joueur
     public void ReduireVie()
     {
         _nbVie -= 1;
@@ -152,9 +137,24 @@ public class Player : MonoBehaviour
             GetComponent<BoxCollider2D>().enabled = false;
         }
     }
-
+    //Retourne le nombre de point de vie restant
     public int GetVie()
     {
         return _nbVie;
+    }
+    //Retourne le temps que cela prend poru recharger une flèche de feu
+    public float GetTimeFireArrow()
+    {
+        return _fireRateFireArrow;
+    }
+    //Retourn le temps avant de pouvoir tirer une flèche de feu
+    public float GetCanFireFireArrow()
+    {
+        return _canFireFireArrow;
+    }
+    //Set la position du joueur
+    public void SetPositionJoueur(float x, float y)
+    {
+        this.gameObject.transform.position = new Vector3(x, y, 0f);
     }
 }
