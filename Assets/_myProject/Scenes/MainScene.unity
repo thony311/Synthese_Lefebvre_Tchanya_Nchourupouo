@@ -305,6 +305,7 @@ MonoBehaviour:
   _fillBar: {fileID: 997658797}
   _textPointage: {fileID: 1618041631}
   _textTemps: {fileID: 1253913297}
+  _fillFireArrow: {fileID: 0}
 --- !u!1 &201000402
 GameObject:
   m_ObjectHideFlags: 0
@@ -630,7 +631,7 @@ GameObject:
   - component: {fileID: 383820084}
   - component: {fileID: 383820083}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: TextFireArrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -653,8 +654,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 37.295, y: 25}
-  m_SizeDelta: {x: 308.59, y: 50}
+  m_AnchoredPosition: {x: -16.29, y: 25}
+  m_SizeDelta: {x: 415.75, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &383820083
 MonoBehaviour:
@@ -676,7 +677,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Fleche de feu
+  m_text: Chargement fleche de feu
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9db59b5ca378f69438e978035c958fa7, type: 2}
   m_sharedMaterial: {fileID: -9147940084608707933, guid: 9db59b5ca378f69438e978035c958fa7, type: 2}
@@ -995,7 +996,7 @@ GameObject:
   - component: {fileID: 796649437}
   - component: {fileID: 796649436}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Chargement
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1018,8 +1019,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -14.16, y: 18.88}
-  m_SizeDelta: {x: 241.59, y: 62.24}
+  m_AnchoredPosition: {x: -26.35, y: 14.78}
+  m_SizeDelta: {x: 406.56, y: 70.44}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &796649436
 MonoBehaviour:
@@ -2318,8 +2319,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -243, y: -50}
-  m_SizeDelta: {x: 383.18, y: 100}
+  m_AnchoredPosition: {x: -118.75, y: -50}
+  m_SizeDelta: {x: 631.67, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!4 &1978411511 stripped
 Transform:
