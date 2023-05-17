@@ -19,16 +19,13 @@ public class Player : MonoBehaviour
     private Animator _animator;
     private bool _cotePlayer = true;
     private bool _enTir = false;
-    
     private bool _death = false;
-    
-
+    // Start ======================================================================================================================================================
     void Start()
     {
         _animator = GetComponent<Animator>();
     }
-
-    // Update is called once per frame
+    // Update ======================================================================================================================================================
     void Update()
     {
         if(!_death)
@@ -45,7 +42,8 @@ public class Player : MonoBehaviour
         }
         
     }
-
+    // Méthodes private ======================================================================================================================================================
+    //Permet de bouger le joueur
     private void ActionJoueur()
     {
         float horizontal = Input.GetAxis("Horizontal");
@@ -81,7 +79,7 @@ public class Player : MonoBehaviour
             GetComponent<BoxCollider2D>().enabled = true;
         }
     }
-
+    //permet de faire tirer des flèches
     private void Tir()
     {
         
@@ -99,7 +97,7 @@ public class Player : MonoBehaviour
             }
             _animator.SetBool("Attack", true);
             StartCoroutine(SpawnArrow(positionX));
-            //Instantiate(_arrow, transform.position + new Vector3(positionX, -0.4f, 0f), Quaternion.identity); 
+            
         }
         if (Input.GetKeyUp(KeyCode.F) && Time.time > _canFire && Time.time > _canFireFireArrow)
         {
@@ -115,10 +113,10 @@ public class Player : MonoBehaviour
             }
             _animator.SetBool("Attack", true);
             StartCoroutine(SpawnFireArrow(positionX));
-            //Instantiate(_arrow, transform.position + new Vector3(positionX, -0.4f, 0f), Quaternion.identity); 
+            
         }
     }
-
+    // Coroutines ======================================================================================================================================================
     IEnumerator SpawnArrow(float positionX)
     {
         _canFire = Time.time + _fireRate;
@@ -138,7 +136,7 @@ public class Player : MonoBehaviour
         _animator.SetBool("Attack", false);
         _enTir = false;
     }
-
+    //Méthodes public ==================================================================================================================================================
     public bool GetCotePlayer()
     {
         return _cotePlayer;

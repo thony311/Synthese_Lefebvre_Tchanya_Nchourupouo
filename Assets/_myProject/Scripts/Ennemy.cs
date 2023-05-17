@@ -68,6 +68,7 @@ public class Ennemy : MonoBehaviour
 
     }
     //On Collision ================================================================================================================================================================
+    //Sortie de la collision
     private void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Player" && _id == 2)
@@ -78,6 +79,7 @@ public class Ennemy : MonoBehaviour
         }
         
     }
+    //En restant dans la collision
     private void OnCollisionStay2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Player" && _id == 2)
@@ -100,6 +102,7 @@ public class Ennemy : MonoBehaviour
             
         }
     }
+    //En rentrant dans la collision
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if(collision.gameObject.tag == "Arrow")
@@ -232,8 +235,8 @@ public class Ennemy : MonoBehaviour
         GetComponent<BoxCollider2D>().enabled = false;
         _ui.AddPointage(50);
     }
-
     // Coroutines ================================================================================================================================================================
+    //Lance l'attack du Goblin contre le coffre et lance les animations
     IEnumerator AttackGoblin(Collision2D collision)
     {
         yield return new WaitForSeconds(1f);
@@ -250,6 +253,7 @@ public class Ennemy : MonoBehaviour
         _animator.SetBool("IdleGoblin", false);
         _enMouvement = true;
     }
+    //Lance l'attack du skeleton contre le joueur avec les animation
     IEnumerator AttackSkeleton()
     {
         while (_boucle == true) {
@@ -265,6 +269,7 @@ public class Ennemy : MonoBehaviour
             _animator.SetBool("AttackSkeleton", false);
         }
     }
+    //Lance l'attack du shroom contre des coffres avec les animation
     IEnumerator AttackShroom(Collision2D toto)
     {
         Debug.Log(toto.gameObject);

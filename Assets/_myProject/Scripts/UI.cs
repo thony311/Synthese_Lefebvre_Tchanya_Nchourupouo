@@ -12,10 +12,12 @@ public class UI : MonoBehaviour
     [SerializeField] private Image _fillBar = default;
     [SerializeField] private TextMeshProUGUI _textPointage = default;
     [SerializeField] private TextMeshProUGUI _textTemps = default;
+    [SerializeField] private Image _fillFireArrow = default;
     // Variables================================================================================================================================================
     private Player _player;
     private float _vieMax;
     private int _pointage = 0;
+    private bool _canFireArrow = true;
     // Start ====================================================================================================================================================
     void Start()
     {

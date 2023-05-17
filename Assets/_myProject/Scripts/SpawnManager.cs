@@ -4,23 +4,23 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    //SerializeField
+    //SerializeField ======================================================================================================================================================
     [SerializeField] private GameObject[] _listeEnemyPrefabs = default;
     [SerializeField] private GameObject _enemyCountainer =default;
-
+    //Variables ======================================================================================================================================================
     private bool _stopSpawn = false;
-    // Start is called before the first frame update
+    //Start ======================================================================================================================================================e
     void Start()
     {
         StartCoroutine(SpawnEnemyRoutine());
     }
 
-    // Update is called once per frame
+    //Update ======================================================================================================================================================
     void Update()
     {
         
     }
-
+    //Coroutines ======================================================================================================================================================
     IEnumerator SpawnEnemyRoutine()
     {
         yield return new WaitForSeconds(5.0f);
@@ -33,7 +33,7 @@ public class SpawnManager : MonoBehaviour
             yield return new WaitForSeconds(5.0f);
         }
     }
-
+    //Méthodes public ======================================================================================================================================================
     public float randomEtage()
     {
         float random = Random.Range(1, 5);
