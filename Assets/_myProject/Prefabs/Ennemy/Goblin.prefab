@@ -169,3 +169,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _vitesse: 5
   _id: 1
+  _attack: {fileID: 8300000, guid: 772d730c53da51f448fcb86c64584613, type: 3}

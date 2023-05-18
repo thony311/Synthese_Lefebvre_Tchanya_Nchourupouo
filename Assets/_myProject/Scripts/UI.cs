@@ -34,7 +34,7 @@ public class UI : MonoBehaviour
         MiseAJourText();
         ChargementFireArrow();
     }
-    // Méthodes =================================================================================================================================================
+    // Méthodes private =================================================================================================================================================
     //Gère la bar de chargement de la fire arrow
     private void ChargementFireArrow()
     {
@@ -59,5 +59,11 @@ public class UI : MonoBehaviour
     {
         _textPointage.text = "Pointage : " + _pointage;
         _textTemps.text = "Temps : " + Math.Round(Time.time);
+    }
+    //// Méthodes public =================================================================================================================================================
+    //Retourne le pointage du joueur
+    public int GetPointage()
+    {
+        return _pointage;
     }
 }

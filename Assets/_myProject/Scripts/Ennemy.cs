@@ -10,6 +10,7 @@ public class Ennemy : MonoBehaviour
     //SerializedField ==============================================================================================================================================================
     [SerializeField] float _vitesse = 5;
     [SerializeField] int _id = 1;
+    [SerializeField] AudioClip _attack = default;
     //Variable =====================================================================================================================================================================
     private Player _player;
     private int _nbVie;
@@ -22,6 +23,7 @@ public class Ennemy : MonoBehaviour
     private bool _destroyChest = false;
     private Collision2D _collisionChest = default;
     private UI _ui;
+    private bool _uneCollision = true;
     //start ========================================================================================================================================================================
     void Start()
     {
@@ -37,7 +39,7 @@ public class Ennemy : MonoBehaviour
         if (_id == 1)
         {
             _nbVie = 1;
-            Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(),_player.GetComponent<Collider2D>());
+            //Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(),_player.GetComponent<Collider2D>());
             
         }
         else if (_id == 2)
@@ -77,7 +79,17 @@ public class Ennemy : MonoBehaviour
             _enMouvement = true;
             _animator.SetBool("GoIdleSkeleton", false);
         }
-        
+        else if (collision.gameObject.tag == "Player" && _id == 1)
+        {
+            _boucle = false;
+            _enMouvement = true;
+        }
+        else if (collision.gameObject.tag == "Player" && _id == 3)
+        {
+            _boucle = false;
+            _enMouvement = true;
+        }
+
     }
     //En restant dans la collision
     private void OnCollisionStay2D(Collision2D collision)
@@ -89,7 +101,7 @@ public class Ennemy : MonoBehaviour
             _animator.SetBool("GoIdleSkeleton", true);
             
         }
-        else if ((collision.gameObject.tag == "Chest1" || collision.gameObject.tag == "Chest2" || collision.gameObject.tag == "Chest3" || collision.gameObject.tag == "Chest4") && (_id == 1 || _id == 3))
+        else if (collision.gameObject.tag== "Player" && (_id == 1 || _id == 3))
         {
             _enCollision = true;
             _enMouvement = false;
@@ -98,8 +110,6 @@ public class Ennemy : MonoBehaviour
         {
             _enCollision = false;
             _enMouvement = true;
-            
-            
         }
     }
     //En rentrant dans la collision
@@ -134,34 +144,15 @@ public class Ennemy : MonoBehaviour
             {
                 CollisionPlayerSkeleton();
             }
-            else if(collision.gameObject.tag == "Chest")
-            {
-
-            }
-
         }
-        else if(collision.gameObject.tag == "Chest" && _id == 1)
+        else if(collision.gameObject.tag == "Player" && _id == 1)
         {
-            CollisionGoblinChest(collision);
+            //CollisionGoblinChest(collision);
+            CollisionPlayerGoblin();
         }
-        else if( _id == 3)
+        else if(collision.gameObject.tag == "Player" && _id == 3)
         {
-            if(collision.gameObject.tag == "Chest1")
-            {
-                CollisionShroomChest(collision);
-            }
-            else if (collision.gameObject.tag == "Chest2")
-            {
-                CollisionShroomChest(collision);
-            }
-            else if (collision.gameObject.tag == "Chest3")
-            {
-                CollisionShroomChest(collision);
-            }
-            else if (collision.gameObject.tag == "Chest4")
-            {
-                CollisionShroomChest(collision);
-            }
+            CollisionPlayerShroom();
         }
     }
     //Méthodes ====================================================================================================================================================================
@@ -187,31 +178,49 @@ public class Ennemy : MonoBehaviour
         }
     }
     //Le resultat de la collision avec le shroom et le chest qui a pour resultat de lancer lanimation du goblin et detruire le chest
-    private void CollisionShroomChest(Collision2D collision)
-    {
-        _enMouvement = false;
-        _animator.SetBool("IdleShroom", true);
-        _animator.SetBool("RunShroom", false);
-        _collisionChest = collision;
-        Debug.Log(_collisionChest.gameObject);
-        StartCoroutine(AttackShroom(collision));
-    }
+    //private void CollisionShroomChest(Collision2D collision)
+    //{
+    //    _enMouvement = false;
+    //    _animator.SetBool("IdleShroom", true);
+    //    _animator.SetBool("RunShroom", false);
+    //    _collisionChest = collision;
+    //    Debug.Log(_collisionChest.gameObject);
+    //    StartCoroutine(AttackShroom(collision));
+    //}
     //Le resultat de la collision avec le goblin et le chest qui a pour resultat de lancer lanimation du goblin et detruire le chest
-    private void CollisionGoblinChest(Collision2D collision)
+    //private void CollisionGoblinChest(Collision2D collision)
+    //{
+    //    _enMouvement = false;
+    //    _animator.SetBool("IdleGoblin", true);
+    //    _animator.SetBool("RunGoblin", false);
+    //    _collisionChest = collision;
+    //    StartCoroutine(AttackGoblin(collision));
+    //}
+    //Le resultat de la collision avec le goblin et le player qui a pour resultat de lancer une animation du goblin et faire perdre des points de vies au joueur
+    private void CollisionPlayerGoblin()
     {
+        _boucle = true;
         _enMouvement = false;
         _animator.SetBool("IdleGoblin", true);
         _animator.SetBool("RunGoblin", false);
-        _collisionChest = collision;
-        StartCoroutine(AttackGoblin(collision));
+        StartCoroutine(AttackGoblinPlayer());
     }
-    //Le resultat de la collision avec le skeleton et le player qui a pour resultat de lancer les animations du skeleton et faire perdre des points de vies au joueurs
+    //Le resultat de la collision avec le skeleton et le player qui a pour resultat de lancer les animations du skeleton et faire perdre des points de vies au joueur
     private void CollisionPlayerSkeleton()
     {
         _boucle = true;
         _enMouvement = false;
         _animator.SetBool("GoIdleSkeleton", true);
         StartCoroutine(AttackSkeleton());
+    }
+    //Le resultat de la collision avec le shroom et le player qui a pour resultat de lancer les animations du shroom et faire perdre des points de vies au joueur
+    private void CollisionPlayerShroom()
+    {
+        _boucle = true;
+        _enMouvement = false;
+        _animator.SetBool("IdleShroom", true);
+        _animator.SetBool("RunShroom", false);
+        StartCoroutine(AttackShroomPlayer());
     }
     //Lance la mort du Shroom
     private void MortShroom()
@@ -237,22 +246,22 @@ public class Ennemy : MonoBehaviour
     }
     // Coroutines ================================================================================================================================================================
     //Lance l'attack du Goblin contre le coffre et lance les animations
-    IEnumerator AttackGoblin(Collision2D collision)
-    {
-        yield return new WaitForSeconds(1f);
-        _animator.SetBool("AttackGoblin", true);
-        _animator.SetBool("IdleGoblin", false);
-        yield return new WaitForSeconds(0.8f);
-        //if (_enCollision == true)
-        //    Destroy(collision.gameObject);
-        yield return new WaitForSeconds(0.1f);
-        _animator.SetBool("AttackGoblin", false);
-        _animator.SetBool("IdleGoblin", true);
-        yield return new WaitForSeconds(0.1f);
-        _animator.SetBool("RunGoblin", true);
-        _animator.SetBool("IdleGoblin", false);
-        _enMouvement = true;
-    }
+    //IEnumerator AttackGoblin(Collision2D collision)
+    //{
+    //    yield return new WaitForSeconds(1f);
+    //    _animator.SetBool("AttackGoblin", true);
+    //    _animator.SetBool("IdleGoblin", false);
+    //    yield return new WaitForSeconds(0.8f);
+    //    //if (_enCollision == true)
+    //    //    Destroy(collision.gameObject);
+    //    yield return new WaitForSeconds(0.1f);
+    //    _animator.SetBool("AttackGoblin", false);
+    //    _animator.SetBool("IdleGoblin", true);
+    //    yield return new WaitForSeconds(0.1f);
+    //    _animator.SetBool("RunGoblin", true);
+    //    _animator.SetBool("IdleGoblin", false);
+    //    _enMouvement = true;
+    //}
     //Lance l'attack du skeleton contre le joueur avec les animation
     IEnumerator AttackSkeleton()
     {
@@ -264,35 +273,99 @@ public class Ennemy : MonoBehaviour
             if (_enCollision == true)
             {
                 _player.ReduireVie();
+                AudioSource.PlayClipAtPoint(_attack, Camera.main.transform.position, 0.3f);
             }
             yield return new WaitForSeconds(0.2f);
             _animator.SetBool("AttackSkeleton", false);
         }
     }
-    //Lance l'attack du shroom contre des coffres avec les animation
-    IEnumerator AttackShroom(Collision2D toto)
+    IEnumerator AttackGoblinPlayer()
     {
-        Debug.Log(toto.gameObject);
-        yield return new WaitForSeconds(1f);
-        _animator.SetBool("AttackShroom", true);
-        _animator.SetBool("IdleShroom", false);
-        Debug.Log("avant la boucle" + toto.gameObject);
-        yield return new WaitForSeconds(0.8f);
-        if (_enCollision == true )
-        {   
-            Debug.Log("tu rentre dans la boucle");
-            Debug.Log(toto.gameObject);
-            //Destroy(toto.gameObject);
-            //_collisionChest.gameObject.GetComponent<Chest>().DestroyChest();
-            _destroyChest = true;
+        if (_uneCollision == true)
+        {
+            Debug.Log("uneCollision");
+            _uneCollision = false;
+            while (_boucle == true)
+            {
+                yield return new WaitForSeconds(1f);
+                _animator.SetBool("AttackGoblin", true);
+                _animator.SetBool("IdleGoblin", false);
+                yield return new WaitForSeconds(0.8f);
+                if (_enCollision == true)
+                {
+                    _player.ReduireVie();
+                    AudioSource.PlayClipAtPoint(_attack, Camera.main.transform.position, 0.3f);
+                }
+                    
+                yield return new WaitForSeconds(0.1f);
+                _animator.SetBool("AttackGoblin", false);
+                _animator.SetBool("IdleGoblin", true);
+                yield return new WaitForSeconds(0.1f);
+                _animator.SetBool("IdleGoblin", true);
+                _animator.SetBool("RunGoblin", false);
+            }
         }
-        yield return new WaitForSeconds(0.1f);
-        _animator.SetBool("AttackShroom", false);
-        _animator.SetBool("IdleShroom", true);
-        yield return new WaitForSeconds(0.1f);
+        _animator.SetBool("RunGoblin", true);
+        _animator.SetBool("IdleGoblin", false);
+        _enMouvement = true;
+        _uneCollision = true;
+    }
+
+    IEnumerator AttackShroomPlayer()
+    {
+        if (_uneCollision == true)
+        {
+            while (_boucle == true)
+            {
+                _uneCollision = false;
+                yield return new WaitForSeconds(1f);
+                _animator.SetBool("AttackShroom", true);
+                _animator.SetBool("IdleShroom", false);
+                yield return new WaitForSeconds(0.8f);
+                if (_enCollision == true) 
+                {
+                    _player.ReduireVie();
+                    AudioSource.PlayClipAtPoint(_attack, Camera.main.transform.position, 0.3f);
+                }
+                    
+                yield return new WaitForSeconds(0.1f);
+                _animator.SetBool("AttackShroom", false);
+                _animator.SetBool("IdleShroom", true);
+                yield return new WaitForSeconds(0.1f);
+                _animator.SetBool("RunShroom", false);
+                _animator.SetBool("IdleShroom", true);
+                yield return new WaitForSeconds(1f);
+            }
+        }
         _animator.SetBool("RunShroom", true);
         _animator.SetBool("IdleShroom", false);
+        _uneCollision = true;
         _enMouvement = true;
-        //yield break;
     }
+    //Lance l'attack du shroom contre des coffres avec les animation
+    //IEnumerator AttackShroom(Collision2D toto)
+    //{
+    //    Debug.Log(toto.gameObject);
+    //    yield return new WaitForSeconds(1f);
+    //    _animator.SetBool("AttackShroom", true);
+    //    _animator.SetBool("IdleShroom", false);
+    //    Debug.Log("avant la boucle" + toto.gameObject);
+    //    yield return new WaitForSeconds(0.8f);
+    //    if (_enCollision == true )
+    //    {   
+    //        Debug.Log("tu rentre dans la boucle");
+    //        Debug.Log(toto.gameObject);
+    //        //Destroy(toto.gameObject);
+    //        //_collisionChest.gameObject.GetComponent<Chest>().DestroyChest();
+    //        _destroyChest = true;
+    //    }
+    //    yield return new WaitForSeconds(0.1f);
+    //    _animator.SetBool("AttackShroom", false);
+    //    _animator.SetBool("IdleShroom", true);
+    //    yield return new WaitForSeconds(0.1f);
+    //    _animator.SetBool("RunShroom", true);
+    //    _animator.SetBool("IdleShroom", false);
+    //    _enMouvement = true;
+    //    //yield break;
+    //}
 }

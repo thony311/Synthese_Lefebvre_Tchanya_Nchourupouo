@@ -53,14 +53,12 @@ public class Player : MonoBehaviour
             _animator.SetBool("Run", true);
             this.GetComponent<SpriteRenderer>().flipX = true;
             _cotePlayer = false;
-            Debug.Log(_cotePlayer);
         }
         else if (horizontal > 0)
         {
             _animator.SetBool("Run", true);
             this.GetComponent<SpriteRenderer>().flipX = false;
             _cotePlayer = true;
-            Debug.Log(_cotePlayer);
         }
         else
         {
