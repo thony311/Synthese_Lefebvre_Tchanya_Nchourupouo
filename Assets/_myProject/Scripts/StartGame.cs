@@ -11,7 +11,8 @@ public class StartGame : MonoBehaviour
     // Start =============================================================================================================================================================
     void Start()
     {
-        
+        PlayerPrefs.SetFloat("timePerdu", 0f);
+        PlayerPrefs.Save();
     }
     // Update =============================================================================================================================================================
     void Update()
@@ -22,6 +23,8 @@ public class StartGame : MonoBehaviour
     //Permet de lancer le jeu en allant à la première scène
     public void Play()
     {
+        PlayerPrefs.SetFloat("timePerdu",Time.time);
+        PlayerPrefs.Save();
         SceneManager.LoadScene(1);
     }
     //Affiche les instructions du jeu

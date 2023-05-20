@@ -2,6 +2,7 @@ using Mono.Cecil.Cil;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour
@@ -20,10 +21,12 @@ public class Player : MonoBehaviour
     private bool _cotePlayer = true;
     private bool _enTir = false;
     private bool _death = false;
+    private UI _ui;
     // Start ======================================================================================================================================================
     void Start()
     {
         _animator = GetComponent<Animator>();
+        _ui = FindObjectOfType<UI>();
     }
     // Update ======================================================================================================================================================
     void Update()
@@ -99,7 +102,24 @@ public class Player : MonoBehaviour
             StartCoroutine(SpawnFireArrow(positionX));
         }
     }
+    // Permet de sauvegarder le pointage du joueur et lance la coroutine qui va amener a la scene de fin
+    private void Mort()
+    {
+        
+        int valeur = _ui.GetPointage();
+        PlayerPrefs.SetInt("pointage", valeur);
+        PlayerPrefs.SetFloat("timeJeu",Time.time - PlayerPrefs.GetFloat("timePerdu"));
+        PlayerPrefs.Save();
+        StartCoroutine(ChangementScene());
+    }
     // Coroutines ======================================================================================================================================================
+    // Lance le changement de scene apres la mort du joueur
+    IEnumerator ChangementScene()
+    {
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene(2);
+    }
+    // Lance l'animation de tirrage de fleches et fait apparraitre une fleche
     IEnumerator SpawnArrow(float positionX)
     {
         _canFire = Time.time + _fireRate;
@@ -109,6 +129,7 @@ public class Player : MonoBehaviour
         _animator.SetBool("Attack", false);
         _enTir = false;
     }
+    // Lance l'animation de tirrage de fleches et fait apparraitre une fleche de feu
     IEnumerator SpawnFireArrow(float positionX)
     {
         _canFireFireArrow = Time.time + _fireRateFireArrow;
@@ -133,6 +154,7 @@ public class Player : MonoBehaviour
             _death = true;
             _animator.SetBool("Death",true);
             GetComponent<BoxCollider2D>().enabled = false;
+            Mort();
         }
     }
     //Retourne le nombre de point de vie restant

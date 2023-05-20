@@ -33,49 +33,49 @@ public class SpawnManager : MonoBehaviour
             {
                 randomEnnemy = 0;
                 SpawnEnnemy(randomEnnemy);
-                Debug.Log("niveau 1");
+                //Debug.Log("niveau 1");
                 yield return new WaitForSeconds(5.0f);
             }
             else if(_ui.GetPointage() <= 350)
             {
                 randomEnnemy = 0;
                 SpawnEnnemy(randomEnnemy);
-                Debug.Log("niveau 2");
+                //Debug.Log("niveau 2");
                 yield return new WaitForSeconds(4.0f);
             }
             else if(_ui.GetPointage() <= 600)
             {
                 randomEnnemy = Random.Range(0, 2);
                 SpawnEnnemy(randomEnnemy);
-                Debug.Log("niveau 3");
+                //Debug.Log("niveau 3");
                 yield return new WaitForSeconds(4.0f);
             }
             else if(_ui.GetPointage() <= 1000)
             {
                 randomEnnemy = Random.Range(0, 3);
                 SpawnEnnemy(randomEnnemy);
-                Debug.Log("niveau 4");
+                //Debug.Log("niveau 4");
                 yield return new WaitForSeconds(4.0f);
             }
             else if(_ui.GetPointage() <= 2000)
             {
                 randomEnnemy = Random.Range(0, 3);
                 SpawnEnnemy(randomEnnemy);
-                Debug.Log("niveau 5");
+                //Debug.Log("niveau 5");
                 yield return new WaitForSeconds(2.0f);
             }
             else if(_ui.GetPointage() <= 3000)
             {
                 randomEnnemy = Random.Range(0, 3);
                 SpawnEnnemy(randomEnnemy);
-                Debug.Log("niveau 6");
+                //Debug.Log("niveau 6");
                 yield return new WaitForSeconds(1.0f);
             }
             else if (_ui.GetPointage() > 4000)
             {
                 randomEnnemy = Random.Range(0, 3);
                 SpawnEnnemy(randomEnnemy);
-                Debug.Log("niveau 6");
+                //Debug.Log("niveau 7");
                 yield return new WaitForSeconds(0.5f);
             }
 

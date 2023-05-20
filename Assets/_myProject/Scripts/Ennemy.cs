@@ -20,8 +20,8 @@ public class Ennemy : MonoBehaviour
     private bool _enCollision;
     private bool _boucle = true;
     private SpawnManager _spawnManager;
-    private bool _destroyChest = false;
-    private Collision2D _collisionChest = default;
+    //private bool _destroyChest = false;
+    //private Collision2D _collisionChest = default;
     private UI _ui;
     private bool _uneCollision = true;
     //start ========================================================================================================================================================================
@@ -59,14 +59,14 @@ public class Ennemy : MonoBehaviour
             Mouvement();
         }
         MoveEnnemy();
-        if (_destroyChest)
-        {
-            _destroyChest = false;
-            //_collisionChest.gameObject.GetComponent<Chest>().DestroyChest();
-            Debug.Log(_collisionChest.gameObject);
-            Destroy(_collisionChest.gameObject);
-            StopCoroutine("AttackShroom");
-        }
+        //if (_destroyChest)
+        //{
+        //    _destroyChest = false;
+        //    //_collisionChest.gameObject.GetComponent<Chest>().DestroyChest();
+        //    //Debug.Log(_collisionChest.gameObject);
+        //    Destroy(_collisionChest.gameObject);
+        //    StopCoroutine("AttackShroom");
+        //}
 
     }
     //On Collision ================================================================================================================================================================
@@ -283,7 +283,7 @@ public class Ennemy : MonoBehaviour
     {
         if (_uneCollision == true)
         {
-            Debug.Log("uneCollision");
+            //Debug.Log("uneCollision");
             _uneCollision = false;
             while (_boucle == true)
             {

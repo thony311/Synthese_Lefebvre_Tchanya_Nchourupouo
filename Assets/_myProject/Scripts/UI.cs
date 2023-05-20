@@ -17,7 +17,8 @@ public class UI : MonoBehaviour
     private Player _player;
     private float _vieMax;
     private int _pointage = 0;
-    private bool _canFireArrow = true;
+    //private bool _canFireArrow = true;
+    private float _time = 0f;
     // Start ====================================================================================================================================================
     void Start()
     {
@@ -33,6 +34,7 @@ public class UI : MonoBehaviour
         LoseHealthBar();
         MiseAJourText();
         ChargementFireArrow();
+        _time = Time.time - PlayerPrefs.GetFloat("timePerdu");
     }
     // Méthodes private =================================================================================================================================================
     //Gère la bar de chargement de la fire arrow
@@ -43,27 +45,27 @@ public class UI : MonoBehaviour
             _fillFireArrow.fillAmount = (_player.GetCanFireFireArrow() - Time.time) / _player.GetTimeFireArrow();
         }
     }
-    //Gère la bar de vie du player pour la réduire lors de dégât
-    public void LoseHealthBar()
-    {
-        float conversion = (float)_player.GetVie();
-        _fillBar.fillAmount = conversion / _vieMax;
-    }
-    //Rajoute un nombre au pointage
-    public void AddPointage(int point)
-    {
-        _pointage += point;
-    }
     //Met a jour les differents texts : pointage et temps
     private void MiseAJourText()
     {
         _textPointage.text = "Pointage : " + _pointage;
-        _textTemps.text = "Temps : " + Math.Round(Time.time);
+        _textTemps.text = "Temps : " + Math.Round(_time);
     }
     //// Méthodes public =================================================================================================================================================
     //Retourne le pointage du joueur
     public int GetPointage()
     {
         return _pointage;
+    }
+    //Rajoute un nombre au pointage
+    public void AddPointage(int point)
+    {
+        _pointage += point;
+    }
+    //Gère la bar de vie du player pour la réduire lors de dégât
+    public void LoseHealthBar()
+    {
+        float conversion = (float)_player.GetVie();
+        _fillBar.fillAmount = conversion / _vieMax;
     }
 }
